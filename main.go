@@ -31,6 +31,7 @@ func getMovies(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode(movies)
 }
 
+
 func deleteMovie(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
@@ -38,6 +39,7 @@ func deleteMovie(w http.ResponseWriter, r *http.Request)  {
 		if item.ID == params["id"] {
 			// take all items up to but not including the item we want to delete, as well as all the items after but not including (+1) and put reassign to movies slice. Leaving out the deleted item. 
 			movies = append(movies[:index], movies[index+1:]...)
+			break
 		}
 	}
 }
