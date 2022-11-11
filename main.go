@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -22,6 +23,27 @@ type Director struct {
 }
 
 var movies []Movie
+
+
+func getMovies(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/json")
+	// encode the response, the whole movies slice, into json 
+	json.NewEncoder(w).Encode(movies)
+}
+
+
+func deleteMovie(w http.ResponseWriter, r *http.Request)  {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range movies {
+		if item.ID == params["id"] {
+			// take all items up to but not including the item we want to delete, as well as all the items after but not including (+1) and put reassign to movies slice. Leaving out the deleted item. 
+			movies = append(movies[:index], movies[index+1:]...)
+			break
+		}
+	}
+}
+
 
 func main() {
 	r := mux.NewRouter()
