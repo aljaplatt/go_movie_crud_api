@@ -11,9 +11,9 @@ import (
 
 
 type Movie struct {
-	ID string `json:"id"`
-	ISBN string `json:"isbn"`
-	Title string `json:"title"`
+	ID 		string `json:"id"`
+	ISBN 	string `json:"isbn"`
+	Title 	string `json:"title"`
 	Director *Director `json:"director"`
 }
 
@@ -55,6 +55,8 @@ func deleteMovie(w http.ResponseWriter, r *http.Request)  {
 			break
 		}
 	}
+	// return remaining movies
+	json.NewEncoder(w).Encode(movies)
 }
 
 
