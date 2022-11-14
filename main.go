@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -25,6 +27,21 @@ type Director struct {
 var movies []Movie
 
 
+func createMovie(w http.ResponseWriter, r *http.Request){
+	// set header content type to json
+	w.Header().Set("Content-Type", "application/json")
+	// create empty movie variable of type Movie
+	var movie Movie
+	// decode the request json Body, and decode it to the movie variable ??
+	_ = json.NewDecoder(r.Body).Decode(&movie)
+	movie.ID = strconv.Itoa(rand.Intn(100000000))
+	movies = append(movies, movie)
+	// return created movie
+	json.NewEncoder(w).Encode(movie)
+
+}
+
+
 func getMovies(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Type", "application/json")
 	// encode the response, the whole movies slice, into json 
@@ -41,6 +58,10 @@ func getMovie(w http.ResponseWriter, r *http.Request)  {
 			json.NewEncoder(w).Encode(item)
 		}
 	}
+
+}
+
+func updateMovie(w http.ResponseWriter, r *http.Request) {
 
 }
 
